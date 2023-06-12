@@ -16,7 +16,7 @@ Front End deployment can be added later in the future.
 Steps taken in 4 weeks:
 
 Week 1, you will begin the design of a web-based application that you will containerize as a multi-container application using Docker Compose. What are the various features you would like your project to offer? 
--I'll add each of the standard API endpoints: (POST, GET, PUT, PATCH, and DELETE.)
+-I'll add an example of each of the standard API endpoints: (POST, GET, PUT, PATCH, and DELETE.)
 -I need to insert more data into Tables just to get a better example of how it will work, maybe a sample size of 10-20 in each table.
 
 
@@ -61,8 +61,31 @@ in the settings.py file that was created, I commented out the DB section to turn
 -django_init.sql was created in data/misc folder, contains standard settings for initializing a SQL DB, will be referenced in yml file as well.
 -docker-compose.yml file created.It allows to deploy, combine, and configure multiple docker containers at the same time.
 yml file contains container for web server, postgres db, and pgadmin client.
+Ran docker compose down (stop and remove) and started containers again by using docker compose up -d for detached mode.
+-Created new server in PG Admin 4 at localhost/5433 (5433 was set in the yml file)... user is postgres/pass is default admin.
+
+-"docker compose down --rmi all" :this stops containers and removes all images at same time*
+
+Implement password protection with .env and python-decouple, add into .env file and make sure it is in gitignore/dockerignore file. 
+
+docker compose exec web python manage.py migrate --noinput
+-migrated to generate default django tables. Since image was rebuilt, pgadmin server will have to be re-created as well. 
+
+-Created and pushed to githib repo (https://github.com/rnqb/vgdb_django_db.git)
+
+- Need to create my DB tables with Django built in ORM now. 
+
+Django automatically converts Python class/object code to be raw SQL
+- so we wrote some class/object code to interpret my tables scheme.
+-started by creating model.py file with Django ORM to create database tables. 
+-note wasn't sure on how to set foreign keys with django ORM after some research, but I can just do this in PG Admin. 
+
+Now that we have Django ORM code that translates into RAW SQL, we will need to migrate the code to PGSQL DB. 
+python manage.py migrate --run-syncdb had to be run in terminal in order to see tables in PGADMIN. 
 
 
+- Need to setup Insomnia to do CRUD actions to  DB tables. 
+- Used Django for my project, need to setup pytest with it somehow. 
 
 
 	
@@ -74,6 +97,6 @@ yml file contains container for web server, postgres db, and pgadmin client.
 
 
 
-In Week 3, you will continue building out your application in Docker Compose, and you will begin to add tests to it. 
+Week 3, you will continue building out your application in Docker Compose, and you will begin to add tests to it. 
 
 In Week 4, you will attempt to deploy your application to one of the Big Three Cloud Service Providers. Alternatively (or additionally), you will build a GitHub Actions workflow to automate building and testing your application.
